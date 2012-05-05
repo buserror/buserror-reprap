@@ -65,4 +65,25 @@ module clamp() difference() {
             polygon(points = [[3.00,-5.00],[3.00,5.00],[-3.00,0.00]], paths = [[0,1,2]]);
 }
 
+/*
+ * This is used only for demo screenshots, and thus
+ * does not infect the main code
+ */
+// PRUSA Mendel  
+// Functions used in many files
+// GNU GPL v3
+// Josef Průša
+// josefprusa@me.com
+// prusadjs.cz
+// http://www.reprap.org/wiki/Prusa_Mendel
+// http://github.com/prusajr/PrusaMendel
 
+
+module nut(d,h,horizontal=true){
+cornerdiameter =  (d / 2) / cos (180 / 6);
+cylinder(h = h, r = cornerdiameter, $fn = 6);
+if(horizontal){
+for(i = [1:6]){
+	rotate([0,0,60*i]) translate([-cornerdiameter-0.2,0,0]) rotate([0,0,-45]) cube(size = [2,2,h]);
+}}
+}
