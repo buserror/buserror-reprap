@@ -48,8 +48,8 @@ ScrewNutInset = WallW / 3;
 ScrewWasherInset = 2;
 
 rotate(-45,0,0) {
-	rotate([180,0,0])
-		zizolator();
+//	rotate([180,0,0])
+//		zizolator();
 	translate([GuideL-NutR-ScrewL+1+(ScrewOnSide*3), 18, 0])
 		rotate([0,180,0])
 			zizolator();

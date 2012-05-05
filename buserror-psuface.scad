@@ -32,9 +32,12 @@ IECTYPE=1;
 
 $fn = 40;
 
+demo=1;
+
 // rotate face down for printing, and scale a /notch/ up to ease fitting
-rotate([90,0,0]) scale([1.001, 1.001, 1.001])
-	psuface();
+rotate(demo==1 ? [0,0,0] : [90,0,0]) 
+	scale([1.001, 1.001, 1.001])
+		psuface();
 
 // debug
 //translate([WallThickness, -100, WallThickness])	carve_content_tool();

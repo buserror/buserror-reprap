@@ -32,12 +32,20 @@ m8smooth = 8.0 / 2;
 smoothwidth = (m8smooth + shell) * 2;
 rodW = (m8rod + shell) * 2;
 
-for (row = [0:1]) for (col = [0:1]) {
-	translate([row * 25, col * 15, 0])
-		clamp();
+demo=0;
+four=0;
+
+if (four==0) {
+	rotate(demo == 1 ? [0,90,0] : [0,0,0])
+	clamp(demo=demo);
+} else {
+	for (row = [0:1]) for (col = [0:1]) {
+		translate([row * 25, col * 15, 0])
+			clamp();
+	}
 }
 
-module clamp() difference() {
+module clamp(demo=0) difference() {
 	union() {
 		cylinder(r = m8rod + shell, h = smoothwidth);
 		translate([0, -(m8rod + shell), 0])
@@ -47,11 +55,27 @@ module clamp() difference() {
 				cylinder(r = m8smooth + shell, h = rodW);
 	}
 
+	if (demo==1) % union() {
+		assign(WasherR = 16/2,
+			WasherH = 1.6,
+			NutH = 6.5,
+			NutD = 13) {
+		translate([0,0,-15])
+			cylinder(r = m8rod, h = smoothwidth + 30);
+		translate([0,0,-WasherH])
+			cylinder(r = WasherR, h = WasherH);
+		translate([0,0,-WasherH-NutH])
+			nut(d = NutD, h = NutH, horizontal=false);
+		}
+	}	
 	translate([0,0,-1])
 		cylinder(r = m8rod, h = smoothwidth + 2);	
 	translate([m8rod + m8smooth, (rodW / 2) + 1, rodW / 2])
-		rotate([90,0,0])
+		rotate([90,0,0]) {
 				cylinder(r = m8smooth, h = rodW + 2);
+			if (demo==1) translate([0,0,-8])
+				% cylinder(r=m8smooth, h =30);
+		}
 
 	translate([m8rod -0.5, -1, -1]) {
 		rotate([0,0,60])
