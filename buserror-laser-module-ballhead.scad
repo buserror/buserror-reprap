@@ -43,12 +43,19 @@ TotalHeadH = PointerR + WallW + LinkH + BallR + PonterSnapH;
 
 ball();
 
-translate([0, -PointerH-2, TotalHeadH])
-	rotate([0,180,0])
-		head();
-assign(basew=33,basel=50)
-translate([-basew/2, -12-basel/2, 0])
-#cube([basew, basel, LayerHeight/2]);
+translate([0, -PointerH-2, 0]) {
+	translate([0,0,TotalHeadH])
+		rotate([0,180,0])
+			head();
+	assign(basew=24,basel=24)
+	translate([-basew/2, -basel+5, 0]) {
+		#difference() {
+			cube([basew, basel, LayerHeight/2]);
+			translate([4,4,-1])
+				cube([basew-8, basel-8, 2]);
+		}
+	}
+}
 
 module ball() {
 	translate([-BaseW / 2, -BaseW / 2, 0])
@@ -72,7 +79,7 @@ module head() {
 				cylinder(r1 = LinkR + WallW+1.2, r2 = LinkR, h = LinkH);
 
 			translate([0, -PointerH/2, PointerR + WallW + LinkH + BallR])
-				sphere(r = BallR + WallW);				
+				sphere(r = BallR + WallW - 0.1);				
 			
 		}
 		translate([0,10,PonterSnapH])

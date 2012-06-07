@@ -14,7 +14,7 @@ to make sure the M8 nut is held in place. The smooth rod
 arms are suposed to be 'snug' too, having them slack will add
 backlash again.
 
-The original piece functionality is still there, wivh is to 
+The original piece functionality is still there, wich is to 
 make sure the X carriages are decoupled from the Z axis, 
 preventing very successfuly the "Z wobble" when the threaded
 rods move jerk the X carriage back/forth.
@@ -36,7 +36,7 @@ WallW = 4.1;
 E = 0.01;
 
 GuideL = 35;
-GuideW = (RodR * 2) + (WallW * 1.5);
+GuideW = (SRodR * 2) + (WallW * 1.5);
 
 ScrewL = 10;
 ScrewW = (RodR * 2) + (WallW * 1.8);
@@ -59,12 +59,8 @@ module zizolator() {
 	difference() {
 		union() {
 			cylinder(r = WallW + NutR, h = NutH + WallW);
-		//	nut(d = (WallW*2) + (NutR) * 2, h = NutH + WallW, horizontal=false);
 			
-			translate([GuideL / 2, 0, (NutR + WallW + E) / 2])	
-				cube([GuideL, GuideW, NutH + WallW], center = true);
-		
-			translate([GuideL / 2, 0, (NutR + WallW + E) / 2])	
+			translate([GuideL / 2, 0, (NutH + WallW + E) / 2])	
 				cube([GuideL, GuideW, NutH + WallW], center = true);
 		
 			rotate([0,0,-90 * ScrewOnSide])

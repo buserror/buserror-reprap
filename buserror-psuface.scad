@@ -1,4 +1,26 @@
-
+/*
+ * Z Thread Holder
+ *
+ * (C) Michel Pollet <buserror@gmail.com>
+ *
+ ************************LICENSING TERMS***************************
+ * This part is not for commercial distribution without a commercial 
+ * license acquired from the author. Distribution on a small scale 
+ * basis (< 25 units) in the Reprap spirit is free of charge on the
+ * basis of mentioning the Author with the bill of material, any 
+ * wider distribution requires my explicit, written permission.
+ ******************************************************************
+ *
+ * "Face" for a chinese 12V power supply, it is designed to have 2
+ * 12V rocker switches for 2 separate "rails" to the printer, one
+ * big fat "main" rocker switch and a IEC "kettle" socket for the
+ * mains. The file is parametric and can deal with fused, and non-
+ * fused IEC sockets.
+ *
+ * To print, make sure that your slicer handles "thin walls" and update
+ * the values in the file with your nozzle wize and layer height to make
+ * sure the walls are solid plastic.
+ */
 // "error constant". This is used in difference() to make sure 
 // intersections do not suffer from floating point precision 
 E=0.01;
