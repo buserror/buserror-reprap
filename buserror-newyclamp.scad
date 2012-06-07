@@ -25,7 +25,9 @@
 $fn = 62;
 
 // for 0.20mm layer, 0.35mm nozzle 00 this ensures "solid walls"
-shell = 2.7;
+
+extrusionSize = 0.44;	// for 0.20mm layer
+shell = 6 * extrusionSize;
 m8rod = 7.80 / 2;
 m8smooth = 8.0 / 2;
 
@@ -33,15 +35,21 @@ smoothwidth = (m8smooth + shell) * 2;
 rodW = (m8rod + shell) * 2;
 
 demo=0;
-four=0;
+four=1;
+fourraft=1;	// add easy to cut support underneath
 
 if (four==0) {
 	rotate(demo == 1 ? [0,90,0] : [0,0,0])
-	clamp(demo=demo);
+		clamp(demo=demo);
 } else {
-	for (row = [0:1]) for (col = [0:1]) {
-		translate([row * 25, col * 15, 0])
-			clamp();
+	for (row = [0:1]) {
+		if (fourraft == 1) {
+			translate([-2 + (row*25),-10,0])	cube([4, 35, 0.15]);
+			translate([-10 ,-2 + (row*16),0])	cube([50, 4, 0.15]);
+		}
+		for (col = [0:1])
+			translate([row * 25, col * 16, 0])
+				clamp();
 	}
 }
 
