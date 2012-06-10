@@ -35,17 +35,26 @@ smoothwidth = (m8smooth + shell) * 2;
 rodW = (m8rod + shell) * 2;
 
 demo=0;
-four=1;
-fourraft=1;	// add easy to cut support underneath
+four=0;
+raft=1;	// add easy to cut support underneath
 
 if (four==0) {
-	rotate(demo == 1 ? [0,90,0] : [0,0,0])
+	rotate(demo == 1 ? [0,90,0] : [0,0,0]) {
+		if (raft == 1 && demo == 0) {
+			linear_extrude(height=0.20) difference() {
+				scale([1.6,1.6,0])
+					projection(cut = true) hull() clamp();
+				scale([0.99,0.99,1.01])
+					projection(cut = true) hull() clamp();
+			}
+		}
 		clamp(demo=demo);
+	}
 } else {
 	for (row = [0:1]) {
-		if (fourraft == 1) {
-			translate([-2 + (row*25),-10,0])	cube([4, 35, 0.15]);
-			translate([-10 ,-2 + (row*16),0])	cube([50, 4, 0.15]);
+		if (raft == 1) {
+			translate([-2 + (row*25),-10,0])	cube([4, 35, 0.20]);
+			translate([-10 ,-2 + (row*16),0])	cube([50, 4, 0.20]);
 		}
 		for (col = [0:1])
 			translate([row * 25, col * 16, 0])
@@ -53,7 +62,9 @@ if (four==0) {
 	}
 }
 
-module clamp(demo=0) difference() {
+module clamp(demo=0) 
+//translate([-m8rod+2,0,0])
+difference() {
 	union() {
 		cylinder(r = m8rod + shell, h = smoothwidth);
 		translate([0, -(m8rod + shell), 0])
