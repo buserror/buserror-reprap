@@ -28,6 +28,7 @@ bottom_angle = atan((bar_y_offset-top_bar_to_bearing_distance) / bar_x_offset);
 bottom_bar_length = bar_x_offset / cos(bottom_angle);
 echo("bottom angle", bottom_angle, bottom_bar_length);
 
+demo = 1;
 spikey_first_layer_support = 1;
 use_brass_insert_for_tension = 0;
 use_m3_nut_for_tension = 1;
@@ -47,40 +48,49 @@ angle2 = 108.8;
 length_top_bar = 41;
 length_bot_bar = 49;
 support_column_diameter = 6*2;
+bridged_holes_layer = 0.25;
 
 top_extra_thickness = 3;
 
 mirror([1,0,0]) {
-	translate([0,0,total_thickness])
-	rotate([0,180,0])
-	difference() {
-		union() {
+	if (demo == 1) {
+		translate([0,0,60])
+		rotate([90,0,0])
 			ybract();
-			translate([-8,0,total_thickness-0.25])
-				cylinder(r=8,h=0.25);
-			translate([-bar_x_offset, -bar_y_offset, 0])
-			translate([-8,0,total_thickness-0.25])
-				cylinder(r=8,h=0.25);
+	} else {
+		translate([0,0,total_thickness])
+		rotate([0,180,0])
+		difference() {
+			union() {
+				ybract();
+				if (spikey_first_layer_support == 1) {
+					translate([-8,0,total_thickness-bridged_holes_layer])
+						cylinder(r=8,h=bridged_holes_layer);
+					translate([-bar_x_offset, -bar_y_offset, 0])
+					translate([-8,0,total_thickness-bridged_holes_layer])
+						cylinder(r=8,h=bridged_holes_layer);
+				}
+			}
+			translate([-60,-80, -1])
+				cube([100, 100, 1+(total_thickness / 2)]);
 		}
-		translate([-60,-80, -1])
-			cube([100, 100, 1+(total_thickness / 2)]);
-	}
-	translate([10,35,0])
-	rotate([0,0,30])
-	difference() {
-		union() {
-			ybract();
-			translate([-8,0,0])
-				cylinder(r=8,h=0.25);
-			translate([-bar_x_offset, -bar_y_offset, 0])
-			translate([-8,0,0])
-				cylinder(r=8,h=0.25);
+		translate([10,35,0])
+		rotate([0,0,30])
+		difference() {
+			union() {
+				ybract();
+				if (spikey_first_layer_support == 1) {
+					translate([-8,0,0])
+						cylinder(r=8,h=bridged_holes_layer);
+					translate([-bar_x_offset, -bar_y_offset, 0])
+					translate([-8,0,0])
+						cylinder(r=8,h=bridged_holes_layer);
+				}
+			}
+			translate([-60,-80, total_thickness / 2])
+				cube([100, 100, 1+(total_thickness / 2)]);
 		}
-		translate([-60,-80, total_thickness / 2])
-			cube([100, 100, 1+(total_thickness / 2)]);
 	}
-	translate([10,35,0])
-		cylinder(r = 10, h = 0.25);
 }
 	
 
@@ -140,7 +150,8 @@ module ybract() difference() {
 		translate([-bushing_diameter/3,length_top_bar-10, -1]) {
 			nut(r = m3_nut_diameter, h = 1 + m3_nut_height);
 			polyhole(d = m3_washer_diameter, h = 1 + m3_bolt_head_thickness);
-			polyhole(d = m3_diameter, h = total_thickness + 2);
+			translate([0,0,1 + m3_bolt_head_thickness + bridged_holes_layer])
+				polyhole(d = m3_diameter, h = total_thickness + 2);
 		}
 	}
 	translate([-bar_x_offset, -bar_y_offset, 0]) {
@@ -148,7 +159,8 @@ module ybract() difference() {
 			// screw support one
 			translate([-bushing_diameter/3,-length_bot_bar+10, -1]) {
 				polyhole(d = m3_washer_diameter, h = 1 + m3_bolt_head_thickness);
-				polyhole(d = m3_diameter, h = total_thickness + 2);
+				translate([0,0,1 + m3_bolt_head_thickness + bridged_holes_layer])
+					polyhole(d = m3_diameter, h = total_thickness + 2);
 			}
 		}
 	}
@@ -181,6 +193,11 @@ motor_pulley_hole_diameter = 20;
 module motor() {
 //	stepper_motor_mount(17);
 	translate([0,0,-E]) {
+		if (demo == 1) %union() {
+			cylinder(r = motor_pulley_hole_diameter/2, h = total_thickness - 5);		
+			translate([-20,-20,-20])
+				cube([40,40,20]);
+		}
 		hull() {
 			cylinder(r = motor_pulley_hole_diameter/2, h = total_thickness + 10);
 			translate([-10,10,0])
