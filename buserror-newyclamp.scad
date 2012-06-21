@@ -89,7 +89,7 @@ difference() {
 	}	
 	translate([0,0,-1])
 		cylinder(r = m8rod, h = smoothwidth + 2);	
-	translate([m8rod + m8smooth, (rodW / 2) + 1, rodW / 2])
+	translate([m8rod + m8smooth, (rodW / 2) + 1, smoothwidth / 2])
 		rotate([90,0,0]) {
 				cylinder(r = m8smooth, h = rodW + 2);
 			if (demo==1) translate([0,0,-8])
@@ -98,9 +98,9 @@ difference() {
 
 	translate([m8rod -0.5, -1, -1]) {
 		rotate([0,0,60])
-			cube(size=[rodW, m8rod * 1.8, rodW + 2]);
+			cube(size=[rodW, m8rod * 1.8, smoothwidth + 2]);
 		rotate([0,0,90])
-			cube(size=[rodW, m8rod * 1.2, rodW + 2]);
+			cube(size=[rodW, m8rod * 1.2, smoothwidth + 2]);
 	}
 
 	translate([m8rod,-m8rod,m8smooth+shell-0.1]) rotate([90,0,0]) scale(0.7)
