@@ -34,7 +34,7 @@ use_m3_nut_for_tension = 1;
 
 brass_insert_diameter = 4;
 m3_diameter = 3;
-m3_nut_diameter = 5.6;
+m3_nut_diameter = 5.55;
 m3_nut_height = 2.5;
 demo = 0;
 
