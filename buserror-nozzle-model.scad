@@ -1,9 +1,9 @@
 /*
  * Thid is only for my reprap simulator in simavr
  */
-$fn = 20;
+$fn = 16;
 
-E = 0.01;
+E = 0.00;
 blocksize = [12.8, 16, 8.3];
 conesize= [0.4, 9.5, 2.5];
 
@@ -11,7 +11,7 @@ translate(-[blocksize[0] / 2, conesize[1] / 2, 0])
 	difference() {
 		out();
 		in();
-	//	translate([-E,-E,-E]) cube([blocksize[0]+E+E,conesize[1] / 2,20]);
+	//	translate([-1,-1,-1]) cube([blocksize[0]+2,conesize[1] / 2,20]);
 	}
 
 module out() union() {
@@ -32,7 +32,7 @@ module in() union() {
 	translate([blocksize[0] / 2, conesize[1] / 2, -E]) {
 	//	cylinder(r = conesize[0]/2, h = 2);
 		translate([0,0,0.5+0.5]) {
-			cylinder(r1 = conesize[0], r = (conesize[1]-1.5)/2, h = conesize[2] + 0.5+E);
+			cylinder(r1 = conesize[0], r = E+(conesize[1]-1.5)/2, h = conesize[2] + 0.5+E);
 			translate([0,0,conesize[2]+0.5]) 
 				cylinder(r = (conesize[1]-1.5)/2, h = 15);
 		}
