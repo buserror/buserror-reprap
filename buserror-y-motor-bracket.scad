@@ -28,7 +28,7 @@ bottom_angle = atan((bar_y_offset-top_bar_to_bearing_distance) / bar_x_offset);
 bottom_bar_length = bar_x_offset / cos(bottom_angle);
 echo("bottom angle", bottom_angle, bottom_bar_length);
 
-demo = 1;
+demo = 0;
 spikey_first_layer_support = 1;
 use_brass_insert_for_tension = 0;
 use_m3_nut_for_tension = 1;
