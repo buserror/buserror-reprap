@@ -20,15 +20,11 @@ echo("total_thickness", total_thickness);
 bar_x_offset = 3.4 + 26;
 bar_y_offset = 30.05 + 21;
 
-top_bar_to_bearing_distance = (bar_y_offset / 2) * 1.15;
-motor_inset_offset = -3;
+top_bar_to_bearing_distance = (bar_y_offset / 2) * 1.158;
+motor_inset_offset = -3.4;
 motor_angle = 10;
 
-bottom_angle = atan((bar_y_offset-top_bar_to_bearing_distance) / bar_x_offset);
-bottom_bar_length = bar_x_offset / cos(bottom_angle);
-echo("bottom angle", bottom_angle, bottom_bar_length);
-
-demo = 0;
+demo = 1;
 spikey_first_layer_support = 1;
 use_brass_insert_for_tension = 0;
 use_m3_nut_for_tension = 1;
@@ -36,18 +32,19 @@ use_m3_nut_for_tension = 1;
 motor_inter_screw = 31.5;
 
 brass_insert_diameter = 4;
-m3_diameter = 3;
+m3_diameter = 3.1;
 m3_nut_diameter = 5.7;
 m3_nut_height = 2.5;
 m3_bolt_head_thickness = 4; // with washer
-m3_washer_diameter = 7;
+m3_washer_diameter = 7.2;
+m3_washer_surround_diameter = 6*2;
 
 smallbar_width = bar_width - 6;
 angle1 = 180 + 10;
 angle2 = 102.3;
 length_top_bar = 43;
 length_bot_bar = 44;
-support_column_diameter = 5.5*2;
+support_column_diameter = 4.5*2;
 bridged_holes_layer = 0.25;
 motor_pulley_hole_diameter = 22.4;
 
@@ -127,8 +124,10 @@ module ybract() difference() {
 				}
 				// screw support one
 				translate([-bushing_diameter/3,-length_bot_bar + 10,0])
-					translate(bottom_bar_origin)
+					translate(bottom_bar_origin) {
+						cylinder(r = m3_washer_surround_diameter/2, h = bar_thickness);
 						cylinder(r = support_column_diameter/2, h = total_thickness);
+					}
 			}
 		}
 	
@@ -147,9 +146,10 @@ module ybract() difference() {
 						cylinder(r=smallbar_width/2, h=bar_thickness);
 				}
 			// screw support two
-			translate([-bushing_diameter/3,length_top_bar-10,0])
+			translate([-bushing_diameter/3,length_top_bar-10,0]) {
+				cylinder(r = m3_washer_surround_diameter/2, h = bar_thickness);
 				cylinder(r = support_column_diameter /2, h = total_thickness);
-
+			}
 		}
 	}
 
@@ -224,11 +224,11 @@ module motor() {
 		for (y = [-1,1])
 			for (x=[-1,1])
 				translate([x * (motor_inter_screw/2), y * (motor_inter_screw/2), 0]) {
-					cylinder(r = m3_diameter / 2, h = bar_thickness+2);
+					polyhole(d = m3_diameter, h = bar_thickness+2);
 					
 					// holes to put the alen key in
 					translate([0,0,bar_thickness+2]) {
-						cylinder(r = (m3_washer_diameter / 2) * 0.8, h = total_thickness);
+						polyhole(d = m3_washer_diameter * 0.7, h = total_thickness);
 					}
 				}
 	}
