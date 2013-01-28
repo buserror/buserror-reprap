@@ -47,18 +47,45 @@ ScrewWasheR = 7.3 / 2;
 ScrewNutInset = WallW / 3;
 ScrewWasherInset = 2;
 
-rotate(-45,0,0) {
-//	rotate([180,0,0])
-//		zizolator();
-	translate([GuideL-NutR-ScrewL+1+(ScrewOnSide*3), 18, 0])
+raft = 1;
+pair = 1;
+
+if (raft == 1) {
+	difference() {
+		linear_extrude(height=0.20) difference() {
+			scale([1.25,1.25,0])
+				projection(cut = true) hull() zizoprint();
+			scale([0.99,0.99,1.01])
+				projection(cut = true) hull() zizoprint();
+		}
+		translate([-GuideL-NutR-WallW-2, -10, -1]) cube([10,22, 2]);
+	}
+	zizoprint();
+} else {
+	if (pair == 1) {
+		rotate(-45,0,0) {
+			rotate([180,0,0])
+				zizolator();
+			translate([GuideL-NutR-ScrewL+1+(ScrewOnSide*3), 18.5, 0])
+				rotate([0,180,0])
+					zizolator();
+		}
+	} else
 		rotate([0,180,0])
 			zizolator();
 }
 
+module zizoprint() {
+	rotate([0,180,0]) 
+	translate([0,0,-(NutH + WallW)])
+		zizolator();
+}
+
+
 module zizolator() {
 	difference() {
 		union() {
-			cylinder(r = WallW + NutR, h = NutH + WallW);
+			cylinder(r = WallW + NutR, h = NutH + WallW /*, $fn=6 */);
 			
 			translate([GuideL / 2, 0, (NutH + WallW + E) / 2])	
 				cube([GuideL, GuideW, NutH + WallW], center = true);
